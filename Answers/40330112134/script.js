@@ -51,101 +51,94 @@ function hanoi(from, via, to, n) {
         hanoi(via, from, to, n - 1);
     }
 }
-
-function exHanoi_1(start, aux, end, n) {
-    if(n == 1){
-        hanoi(end, start, aux, 3);
-        moves.push([start, end]);
-        hanoi(aux, start, end, 5);
+function hanoi(from, via, to, n) {
+    if (n <= 0) {
+        return;
     }
-    else{
-        exHanoi_1(start, aux, end, n-1);
-        hanoi(end, aux, start, 6*n - 3);
-        moves.push([start, end]);
-        hanoi(aux, start, end, 6*n - 1);
-    }
-}  
 
-function exHanoi_2(A, B, C, D, n) {
-    hanoi(C, B, D, n);
-    hanoi(A, B, C, n);
-    hanoi(D, B, A, n);
+    if (n === 1) {
+        moves.push([from, to]);
+    }
+    else
+    {
+        hanoi(from, to, via, n - 1);
+        moves.push([from, to]);
+        hanoi(via, from, to, n - 1);
+    }
 }
 
+function exHanoi_1(start, aux, end, n) {
+    if(n==1){
+
+        moves.push([start,aux]);
+        hanoi(aux , start , end , 3);
+    }
+
+    else
+    {
+        exHanoi_1(start , aux , end , n-1);
+        moves.push([start,aux]);
+        hanoi(end , start , aux , 6*(n-1));
+        hanoi(aux , start , end , 3*(2*n -1));
+    }
+    return
+
+}
+
+function exHanoi_2(A, B, C, D, n) {
+
+    hanoi(A,D,B,n)
+
+    hanoi(C,D,A,n)
+
+    hanoi(B,D,C,n)
+
+    return
+}
+
+
 function exhanoi_3(A, B, C, n) {
-    if(n == 1){
-        moves.push([A, C]);
-        hanoi(B, A, C, 2);
+    if(n==1){
+        hanoi(A, B, C, 1);
+        hanoi(B,A,C,2)
     }
     else{
-        exhanoi_3(A, B, C, n-1);
-        hanoi(C, A, B, 3*n - 3);
-        moves.push([A, C]);
-        hanoi(B, A, C, 3*n - 1);
+        exhanoi_3(A,B,C,n-1)
+        hanoi(C,A,B,3*n-3)
+        hanoi(A, B, C, 1);
+        hanoi(B,A,C,3*n-1)
     }
+    return
+
 }
 
 // before coding read about the extra rules for this ExHanoi
 function exhanoi_4(A, B, C, D, n) {
-    if (n == 1) {
-        moves.push([A, C]);
-    } else {
-        exhanoi_4(A, B, D, C, n - 1);
-        moves.push([A, C]);
-        exhanoi_4(D, C, A, B, n - 1);
-        exhanoi_4(A, B, C, D, n - 1);
+    if(n==1){
+        hanoi(A,B,C, 1);
+    }else{
+        exhanoi_4(A,B,C,D, n-1);
+        exhanoi_4(C,D,B,A, n-1);
+        hanoi(A,B,C, 1);
+        exhanoi_4(B,A,C,D, n-1);
     }
+    return
+
 }
 
-// before coding read about the extra rules for this ExHanoi
 function exhanoi_5(A, B, C, D, n) {
-    if (n === 1) {
-        moves.push([C, B]);
-        moves.push([B, A]);
-        moves.push([C, B]);
-        moves.push([C, D]);
-        moves.push([B, C]);
-        moves.push([C, D]);
-        moves.push([A, B]);
-        moves.push([B, C]);
-        moves.push([C, D]);
-        moves.push([A, B]);
-        moves.push([B, C]);
-        moves.push([B, A]);
-        moves.push([B, C]);
-        moves.push([A, B]);
-        moves.push([B, C]);
-        moves.push([D, A]);
-        moves.push([A, B]);
-        moves.push([D, A]);
-        moves.push([D, C]);
-        moves.push([A, D]);
-        moves.push([D, C]);
-        moves.push([B, C]);
-    } else {
-        exhanoi_5(A, B, C, D, n - 1);
-        moves.push([A, D]);
-        assist(C, D, A, B, 6 * n - 3);
-        moves.push([D, C]);
-        moves.push([B, C]);
-        moves.push([C, D]);
-        moves.push([B, C]);
-        moves.push([D, C]);
-        assist(A, B, C, D, 6 * n - 3);
+
+    if (n==1) {
+        exhanoi_4(C,A,B,D,3);
+        hanoi(A,B,C, 1);
+        exhanoi_4(B,D,C,A,5);
+        return;
     }
 
-}
-function assist(A, B, C, D, n) {
-    if (n == 1) {
-        moves.push([A, D]);
-        moves.push([D, C]);
-    } else {
-        assist(A, B, C, D, n - 1);
-        moves.push([A, B]);
-        assist(C, D, A, B, n - 1);
-        moves.push([B, C]);
-        assist(A, B, C, D, n - 1);
-    }
+    exhanoi_5(A, B, C, D, n-1);
+    exhanoi_4(C,A,B,D,6*n-3);
+    hanoi(A,B,C, 1);
+    exhanoi_4(B,D,C,A,6*n-1);
 }
 
 function moveDisks(from, to){
